@@ -1,0 +1,6 @@
+﻿
+-- Wheeee a comment!!
+select u.* from Users u
+inner join UserRoles ur on u.UserId = ur.UserId
+inner join Roles r on ur.RoleId = r.RoleId
+where r.Role = @role and u.IsActive = 1

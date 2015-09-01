@@ -1,0 +1,13 @@
+﻿<#@ output extension=".sql" #>
+
+WITH 
+UsersWithRole as 
+( 
+	<#@ include file="UsersByRole.tt" #>
+),
+PublicProjects as
+(
+	<#@ include file="ProjectsBySecret.tt" #>
+)
+select p.* from UsersWithRole u
+inner join PublicProjects p on p.OwnerUserId = u.UserId
