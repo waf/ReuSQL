@@ -8,6 +8,8 @@ All the templating happens at development-time, not runtime.
 Given a query like this, in the template file `CuteAnimalsByLocation.tt`:
 
 ```sql
+<#@ output extension=".sql" #>
+
 select * from animals a
 where a.IsCute = 1 and a.IsFuzzy = 1 and a.Location = @location
 ```
@@ -15,6 +17,8 @@ where a.IsCute = 1 and a.IsFuzzy = 1 and a.Location = @location
 And this file, `DeadlyMachinesByLocation.tt`:
 
 ```sql
+<#@ output extension=".sql" #>
+
 select * from DeadlyMachines m
 where m.IsLethal = 1 and m.HasExplosives = 1 and m.Location = @location
 ```
@@ -22,6 +26,8 @@ where m.IsLethal = 1 and m.HasExplosives = 1 and m.Location = @location
 we can find animals in need of help (and gain SQL code reuse!) by writing the following, `AnimalsInPeril.tt`:
 
 ```sql
+<#@ output extension=".sql" #>
+
 WITH 
 CuteAnimalsInLocation as 
 ( 
