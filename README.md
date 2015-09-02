@@ -51,11 +51,14 @@ using (var connection = new SqlConnection(ConnectionString))
 {
     connection.Open();
 
-    IEnumerable<Animal> a = connection.QueryFromFile<Animal>("AnimalsInPeril", new { Location = "NorthAmerica" });
+    IEnumerable<Animal> animalsNeedingHelp = 
+        connection.QueryFromFile<Animal>("AnimalsInPeril", new { Location = "NorthAmerica" });
     //or
-    IEnumerable<Animal> cuteAnimals = connection.QueryFromFile<Animal>("CuteAnimalsByLocation", new { Location = "NorthAmerica" });
+    IEnumerable<Animal> cuteAnimals = 
+        connection.QueryFromFile<Animal>("CuteAnimalsByLocation", new { Location = "NorthAmerica" });
     //or
-    IEnumerable<DeadlyMachine> deadlyMachines = connection.QueryFromFile<Animal>("DeadlyMachinesByLocation", new { Location = "NorthAmerica" });
+    IEnumerable<DeadlyMachine> deadlyMachines = 
+        connection.QueryFromFile<DeadlyMachine>("DeadlyMachinesByLocation", new { Location = "NorthAmerica" });
 }
 ```
 
