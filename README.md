@@ -1,8 +1,12 @@
 # ReuSQL
-Tiny amount of code for prototyping code reuse in SQL, using Dapper and Visual Studio T4 templates. 
+Tiny amount of code for prototyping code reuse in SQL, using [Dapper](https://github.com/StackExchange/dapper-dot-net) and Visual Studio [T4 text templates](https://msdn.microsoft.com/en-us/library/dd820620(v=vs.120).aspx). 
 SQL Server doesn't really have any facilities for code reuse that perform well, so this provides reusability via templating.
 
-All the templating happens at development-time, not runtime.
+## Implementation Notes
+
+- All the templating happens at development-time, not runtime. 
+- SQL files are deployed with the application and read by DapperFileExtensions.QueryFromFile method.
+- Dapper handles all SQL variable substitution and serialization.
 
 ## Example
 Given a query like this, in the template file `CuteAnimalsByLocation.tt`:
@@ -41,17 +45,17 @@ select a.* from CuteAnimalsInLocation a
 inner join DeadlyMachinesInLocation m on a.Location = m.Location
 ```
 
-We can run these queries like this:
+We can run these queries like this, assuming the POCOs `Animal` and/or `DeadlyMachine` exist:
 ```csharp
 using (var connection = new SqlConnection(ConnectionString))
 {
     connection.Open();
 
-    connection.QueryFromFile<Project>("AnimalsInPeril", new { Location = "NorthAmerica" });
+    IEnumerable<Animal> a = connection.QueryFromFile<Animal>("AnimalsInPeril", new { Location = "NorthAmerica" });
     //or
-    connection.QueryFromFile<Project>("CuteAnimalsByLocation", new { Location = "NorthAmerica" });
+    IEnumerable<Animal> cuteAnimals = connection.QueryFromFile<Animal>("CuteAnimalsByLocation", new { Location = "NorthAmerica" });
     //or
-    connection.QueryFromFile<Project>("DeadlyMachinesByLocation", new { Location = "NorthAmerica" });
+    IEnumerable<DeadlyMachine> deadlyMachines = connection.QueryFromFile<Animal>("DeadlyMachinesByLocation", new { Location = "NorthAmerica" });
 }
 ```
 
